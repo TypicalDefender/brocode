@@ -1,0 +1,40 @@
+modules = ["rust"]
+
+[nix]
+channel = "stable-24_05"
+packages = ["openssl", "pkg-config"]
+
+[workflows]
+runButton = "Project"
+
+[[workflows.workflow]]
+name = "Project"
+mode = "parallel"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Rust Compiler"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "rust_build_and_test"
+
+[[workflows.workflow]]
+name = "Rust Compiler"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cargo build && echo \"Build complete. You can now use the CLI tool with: ./target/debug/brocode\""
+
+[[workflows.workflow]]
+name = "rust_build_and_test"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cargo build && OPENAI_API_KEY=sk-dummy cargo run -- commit"
+
+[deployment]
+run = ["sh", "-c", "cargo build && echo \"Build complete. You can now use the CLI tool with: ./target/debug/brocode\""]
