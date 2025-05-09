@@ -1,7 +1,6 @@
 use crate::config::Config;
 use crate::git;
 use crate::openai;
-use crate::utils;
 use crate::commands::Command;
 use anyhow::{Context, Result, anyhow};
 use async_trait::async_trait;
@@ -84,10 +83,11 @@ impl Command for CommitCommand {
         }
 
         // Split the commit message into summary and description
-        let lines: Vec<&str> = commit_message.split('\n').collect();
-        let summary = lines[0];
+        let lines: Vec<String> = commit_message.split('\n').map(String::from).collect();
+        let summary = lines[0].clone();
         let description = if lines.len() > 1 {
-            Some(lines[1..].join("\n").trim())
+            let joined = lines[1..].join("\n");
+            Some(joined.trim().to_string())
         } else {
             None
         };
@@ -96,11 +96,11 @@ impl Command for CommitCommand {
         println!("{} Committing changes...", "⚙️".blue());
         let status = if let Some(desc) = description {
             ProcessCommand::new("git")
-                .args(["commit", "-m", summary, "-m", desc])
+                .args(["commit", "-m", &summary, "-m", &desc])
                 .status()?
         } else {
             ProcessCommand::new("git")
-                .args(["commit", "-m", summary])
+                .args(["commit", "-m", &summary])
                 .status()?
         };
 

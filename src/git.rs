@@ -1,6 +1,6 @@
 use anyhow::{anyhow, Context, Result};
 use git2::{Repository, StatusOptions};
-use std::path::{Path, PathBuf};
+use std::path::PathBuf;
 use std::process::Command;
 
 /// Find the root directory of the git repository

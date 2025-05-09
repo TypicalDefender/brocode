@@ -10,7 +10,6 @@ use cli::Cli;
 use clap::Parser;
 use config::Config;
 use commands::Command;
-use std::env;
 
 #[tokio::main]
 async fn main() -> Result<()> {
