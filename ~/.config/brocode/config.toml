@@ -1,0 +1,6 @@
+[openai]
+api_key = "" # Replace with your OpenAI API key or set the OPENAI_API_KEY environment variable
+model = "gpt-3.5-turbo"
+temperature = 0.7
+max_tokens = 300
+system_prompt = "You are a helpful assistant who writes concise, professional Git commit messages. Given code changes, write a commit message with a clear single-line summary followed by a more detailed description in Markdown that explains what was changed and why."
